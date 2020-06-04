@@ -49,3 +49,23 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+my_player = Player("Andronik", room['outside'])
+
+user_is_playing = True
+
+while user_is_playing:
+    print(my_player.current_room.name)
+    
+    for line in textwrap.wrap(my_player.current_room.description, 10):
+        print(line)
+    
+    user_input = input("Which directon would you like to go(n/s/e/w): ")
+
+    if user_input in ['n','e','s','w']:
+        my_player.move(user_input)
+
+    else:
+        print("You exited the game. Thanks for playing!")
+
+    user_is_playing = False
