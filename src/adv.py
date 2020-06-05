@@ -23,51 +23,45 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
-
 # Link rooms together
 
-room['outside'].n_to = room['foyer']
-room['foyer'].s_to = room['outside']
-room['foyer'].n_to = room['overlook']
-room['foyer'].e_to = room['narrow']
-room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
-room['narrow'].n_to = room['treasure']
-room['treasure'].s_to = room['narrow']
-
-#
-# Main
-#
-
-# Make a new player object that is currently in the 'outside' room.
-
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+room['outside'].connections['n'] = room['foyer']
+room['foyer'].connections['s']  = room['outside']
+room['foyer'].connections['n']  = room['overlook']
+room['foyer'].connections['e']  = room['narrow']
+room['overlook'].connections['s']  = room['foyer']
+room['narrow'].connections['w']  = room['foyer']
+room['narrow'].connections['n']  = room['treasure']
+room['treasure'].connections['s']  = room['narrow']
 
 my_player = Player("Andronik", room['outside'])
+my_room = Room("Andronik", room['outside'])
 
 user_is_playing = True
 
 while user_is_playing:
+    
+    print("------- NAME -------")
     print(my_player.current_room.name)
+    print("--------------------")
+    print("\n")
+    print("---- INVENTORY ----")
+    print(my_room.items)
+    print("-------------------")
     
     for line in textwrap.wrap(my_player.current_room.description, 10):
         print(line)
     
-    user_input = input("Which directon would you like to go(n/s/e/w): ")
+    user_input = input("Which direction would you like to go(n/s/e/w): ")
+    user_item = input("Enter an item to put into your inventory: ")
 
     if user_input in ['n','e','s','w']:
         my_player.move(user_input)
+        my_room.add(user_item)
 
     else:
         print("You exited the game. Thanks for playing!")
 
-    user_is_playing = False
+        user_is_playing = False
+
+
